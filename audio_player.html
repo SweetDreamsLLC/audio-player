@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Audio Player</title>
+    <style>
+        #playPauseBtn {
+            font-size: 24px;
+            padding: 10px;
+            margin: 20px;
+        }
+    </style>
+</head>
+<body>
+
+<audio id="audioPlayer"></audio>
+<button id="playPauseBtn">Pause</button>
+
+<script>
+    document.addEventListener("DOMContentLoaded", function() {
+        const urlParams = new URLSearchParams(window.location.search);
+        const audioUrl = urlParams.get('audioUrl');
+        const audioPlayer = document.getElementById("audioPlayer");
+        const playPauseBtn = document.getElementById("playPauseBtn");
+
+        if (audioUrl) {
+            audioPlayer.src = audioUrl;
+        }
+
+        // Load state from localStorage
+        const isPlaying = localStorage.getItem("isPlaying") === "true";
+
+        // Play or pause based on stored state
+        if (isPlaying) {
+            audioPlayer.play();
+            playPauseBtn.textContent = "Pause";
+        } else {
+            audioPlayer.pause();
+            playPauseBtn.textContent = "Play";
+        }
+
+        playPauseBtn.addEventListener("click", function() {
+            if (audioPlayer.paused) {
+                audioPlayer.play();
+                playPauseBtn.textContent = "Pause";
+                localStorage.setItem("isPlaying", "true");
+            } else {
+                audioPlayer.pause();
+                playPauseBtn.textContent = "Play";
+                localStorage.setItem("isPlaying", "false");
+            }
+        });
+
+        // Automatically start playing on page load
+        if (isPlaying) {
+            audioPlayer.play();
+        }
+    });
+</script>
+
+</body>
+</html>
